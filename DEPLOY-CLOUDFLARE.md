@@ -114,11 +114,11 @@ PLATFORM_COMMISSION_RATE
 | Setting | Value |
 |---------|-------|
 | Framework preset | Next.js |
-| Build command | `npm run build:cloudflare` |
-| Deploy command | `npx wrangler deploy` |
+| **Build command** | `npm run build` |
+| **Deploy command** | `npx wrangler deploy` |
 | Node.js version | 20+ |
 
-The app uses **OpenNext for Cloudflare** with the **Neon serverless driver** (not `pg`) so database connections work on Workers.
+`npm run build` runs OpenNext and produces the `.open-next/` bundle that Wrangler deploys. Use `npm run build:next` only if you need a standard Next.js build (e.g. Vercel).
 
 Connect your GitHub repo: `Oppachords/Melody-gigs` → branch `main`.
 
