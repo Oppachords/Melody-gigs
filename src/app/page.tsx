@@ -3,8 +3,6 @@ import {
   FeaturedCreatorsSection,
   FeaturedGigsSection,
   CategoriesSection,
-  StatsSection,
-  TestimonialsSection,
   CTASection,
 } from "@/components/landing/home-sections";
 import { AdBanner } from "@/components/ads/google-ad";
@@ -17,10 +15,8 @@ export default function HomePage() {
         <AdBanner className="min-h-[90px]" />
       </div>
       <FeaturedCreatorsSection />
-      <StatsSection />
       <FeaturedGigsSection />
       <CategoriesSection />
-      <TestimonialsSection />
       <CTASection />
     </>
   );

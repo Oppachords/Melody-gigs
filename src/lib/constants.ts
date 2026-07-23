@@ -63,6 +63,7 @@ export const CREATOR_CATEGORIES = [
   "Mastering Engineer",
   "Song Writer",
   "Vocalist",
+  "Instrumentalist",
   "Session Musician",
   "Guitar Player",
   "Pianist",
@@ -84,6 +85,17 @@ export const CREATOR_CATEGORIES = [
   "Beat Maker",
   "Composer",
   "Music Director",
+] as const;
+
+export const POPULAR_CATEGORIES = [
+  "Music Producer",
+  "Mixing Engineer",
+  "Vocalist",
+  "Instrumentalist",
+  "Live Band",
+  "DJ",
+  "Beat Maker",
+  "Video Creator",
 ] as const;
 
 export const SORT_OPTIONS = [

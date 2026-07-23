@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -15,90 +16,8 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import { CreatorCard } from "@/components/cards/creator-card";
 import { AdBanner, AdSidebar } from "@/components/ads/google-ad";
 import { CREATOR_CATEGORIES, SORT_OPTIONS } from "@/lib/constants";
-
-const demoResults = [
-  {
-    id: "1",
-    name: "Kofi Beats",
-    title: "I will produce professional Afrobeat tracks",
-    category: "Music Producer",
-    rating: 4.9,
-    reviews: 127,
-    priceMin: 50,
-    priceMax: 500,
-    country: "Ghana",
-    plan: "PROFESSIONAL",
-    isVerified: true,
-  },
-  {
-    id: "2",
-    name: "Sarah Mix",
-    title: "Professional mixing & mastering engineer",
-    category: "Mixing Engineer",
-    rating: 5.0,
-    reviews: 89,
-    priceMin: 75,
-    priceMax: 300,
-    country: "Nigeria",
-    plan: "UNLIMITED",
-    isVerified: true,
-  },
-  {
-    id: "3",
-    name: "Grace Vocals",
-    title: "Session vocalist for any genre",
-    category: "Vocalist",
-    rating: 4.8,
-    reviews: 64,
-    priceMin: 40,
-    priceMax: 200,
-    country: "Kenya",
-    plan: "PROFESSIONAL",
-    isVerified: true,
-  },
-  {
-    id: "4",
-    name: "DJ Pulse",
-    title: "Event DJ and live mixing services",
-    category: "DJ",
-    rating: 4.7,
-    reviews: 45,
-    priceMin: 100,
-    priceMax: 800,
-    country: "South Africa",
-    plan: "FREE",
-    isVerified: false,
-  },
-  {
-    id: "5",
-    name: "Art Studio",
-    title: "Album cover art and graphics design",
-    category: "Cover Art Designer",
-    rating: 4.9,
-    reviews: 78,
-    priceMin: 30,
-    priceMax: 150,
-    country: "Uganda",
-    plan: "PROFESSIONAL",
-    isVerified: true,
-  },
-  {
-    id: "6",
-    name: "Band Unity",
-    title: "Live band for events and weddings",
-    category: "Live Band",
-    rating: 4.6,
-    reviews: 32,
-    priceMin: 500,
-    priceMax: 2000,
-    country: "Tanzania",
-    plan: "FREE",
-    isVerified: true,
-  },
-];
 
 function SearchFilters() {
   const [priceRange, setPriceRange] = useState([0, 1000]);
@@ -234,13 +153,15 @@ export function SearchPage() {
         </aside>
 
         <div className="flex-1">
-          <p className="mb-4 text-sm text-muted-foreground">
-            {demoResults.length} creators found
-          </p>
-          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {demoResults.map((creator) => (
-              <CreatorCard key={creator.id} {...creator} />
-            ))}
+          <p className="mb-4 text-sm text-muted-foreground">0 creators found</p>
+          <div className="rounded-2xl border border-dashed bg-muted/30 px-6 py-16 text-center">
+            <p className="text-muted-foreground">
+              No creators found yet. Check back soon or join as a creator to be
+              listed here.
+            </p>
+            <Button className="mt-4" variant="outline" asChild>
+              <Link href="/become-creator">Become a Creator</Link>
+            </Button>
           </div>
         </div>
 

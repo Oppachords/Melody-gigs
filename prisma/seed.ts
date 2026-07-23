@@ -41,75 +41,10 @@ async function main() {
       value: {
         heroTitle: "Book a professional",
         heroSubtitle:
-          "Find producers, engineers, vocalists, and creative artists for your next project.",
+          "Find producers, engineers, vocalists, instrumentalists, live bands, and creative artists for your next project.",
       },
     },
   });
-
-  const stats = [
-    { label: "Active Creators", value: "2,500+", sortOrder: 0 },
-    { label: "Projects Completed", value: "15,000+", sortOrder: 1 },
-    { label: "Countries", value: "45+", sortOrder: 2 },
-    { label: "Average Rating", value: "4.9/5", sortOrder: 3 },
-  ];
-
-  for (const stat of stats) {
-    await db.landingStat.create({ data: stat });
-  }
-
-  const testimonials = [
-    {
-      name: "Sarah M.",
-      role: "Independent Artist",
-      content:
-        "MelodyGigs helped me find the perfect mixing engineer for my debut album. The escrow system gave me peace of mind.",
-      rating: 5,
-      sortOrder: 0,
-    },
-    {
-      name: "David K.",
-      role: "Music Producer",
-      content:
-        "As a creator, I've landed consistent work through MelodyGigs. The Pro plan visibility boost is worth every penny.",
-      rating: 5,
-      sortOrder: 1,
-    },
-    {
-      name: "Grace A.",
-      role: "Event Organizer",
-      content:
-        "Found an amazing live band for our corporate event in under 24 hours. Highly recommend!",
-      rating: 5,
-      sortOrder: 2,
-    },
-  ];
-
-  for (const t of testimonials) {
-    await db.testimonial.create({ data: t });
-  }
-
-  const stories = [
-    {
-      title: "From Bedroom Producer to Chart Success",
-      description:
-        "How a young producer from Lagos connected with international artists through MelodyGigs.",
-      clientName: "Universal Music Africa",
-      creatorName: "DJ Kofi",
-      sortOrder: 0,
-    },
-    {
-      title: "Church Band Finds Their Sound",
-      description:
-        "A worship team hired a music director and session musicians to elevate their live performances.",
-      clientName: "Grace Community Church",
-      creatorName: "The Harmony Collective",
-      sortOrder: 1,
-    },
-  ];
-
-  for (const story of stories) {
-    await db.successStory.create({ data: story });
-  }
 
   const faqs = [
     {

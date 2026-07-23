@@ -33,9 +33,9 @@ export function HeroSection() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
-            Find producers, engineers, vocalists, and creative artists for your
-            next project. Secure escrow payments, verified portfolios, and
-            seamless collaboration.
+            Find producers, engineers, vocalists, instrumentalists, live bands,
+            and creative artists for your next project. Secure escrow payments,
+            verified portfolios, and seamless collaboration.
           </p>
 
           <div className="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row">
