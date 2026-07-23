@@ -39,7 +39,7 @@ async function main() {
     create: {
       key: "landing_page",
       value: {
-        heroTitle: "Connect with Top Music Professionals",
+        heroTitle: "Book a professional",
         heroSubtitle:
           "Find producers, engineers, vocalists, and creative artists for your next project.",
       },

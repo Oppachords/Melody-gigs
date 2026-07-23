@@ -26,9 +26,9 @@ export function HeroSection() {
           </div>
 
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-            Connect with Top{" "}
+            Book a{" "}
             <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-              Music Professionals
+              professional
             </span>
           </h1>
 
