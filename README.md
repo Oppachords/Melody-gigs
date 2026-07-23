@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MelodyGigs
+
+A modern, premium freelance marketplace where music professionals, creative artists, and clients connect to collaborate on projects, gigs, performances, productions, and digital creative work.
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript
+- **Styling:** TailwindCSS + shadcn/ui
+- **Animation:** Framer Motion
+- **Database:** PostgreSQL (Neon) + Prisma ORM
+- **Auth:** NextAuth v5 (Google OAuth only)
+- **File Uploads:** UploadThing (profile images)
+- **Payments:** Pandora Systems
+- **Deployment:** Vercel
+
+## Features
+
+- Google OAuth authentication (no passwords)
+- Client & Creator user roles with dedicated dashboards
+- Creator advertisements with portfolio embedding (YouTube, Spotify, SoundCloud, etc.)
+- Gig posting and applications
+- Direct hiring with real-time messaging
+- Escrow payment workflow with 5% platform commission
+- Work agreement contracts
+- Reviews and ratings
+- Subscription plans (Free, Pro $30/yr, Unlimited $50/yr)
+- Advanced search with filters
+- Admin panel for platform management
+- SEO optimized with Schema.org, sitemap, robots.txt
+- Google AdSense integration
+- Dark/light mode
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- PostgreSQL database (recommend [Neon](https://neon.tech))
+- Google OAuth credentials
+- UploadThing account
+- Pandora Systems API keys
+
+### Setup
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Oppachords/Melody-gigs.git
+cd Melody-gigs
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Copy environment variables:
+
+```bash
+cp .env.example .env
+```
+
+4. Configure your `.env` file with:
+   - `DATABASE_URL` — Neon PostgreSQL connection string
+   - `AUTH_SECRET` — Generate with `openssl rand -base64 32`
+   - `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` — Google OAuth credentials
+   - `UPLOADTHING_TOKEN` — UploadThing API token
+   - `PANDORA_API_KEY` / `PANDORA_API_SECRET` — Pandora Systems keys
+   - `NEXT_PUBLIC_GOOGLE_ADSENSE_CLIENT` — Google AdSense client ID
+
+5. Push database schema and seed:
+
+```bash
+npm run db:push
+npm run db:seed
+```
+
+6. Start development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/                    # Next.js App Router pages & API routes
+│   ├── api/               # API endpoints (auth, payments, uploadthing)
+│   ├── dashboard/         # Client, Creator, Admin dashboards
+│   ├── search/            # Creator search
+│   ├── gigs/              # Gig browsing
+│   └── ...
+├── components/
+│   ├── ui/                # shadcn/ui components
+│   ├── layout/            # Header, Footer, Dashboard nav
+│   ├── landing/           # Homepage sections
+│   ├── cards/             # Creator & Ad cards
+│   ├── media/             # Media embed components
+│   └── ads/               # Google AdSense components
+├── lib/                   # Utilities, auth, db, payments
+prisma/
+├── schema.prisma          # Database schema
+└── seed.ts                # Seed data
+public/
+├── logo.svg               # Brand logo
+├── logo.png
+└── ads.txt                # Google AdSense declaration
+```
 
-## Learn More
+## Deployment (Vercel)
 
-To learn more about Next.js, take a look at the following resources:
+1. Push to GitHub
+2. Import project in Vercel
+3. Add all environment variables from `.env.example`
+4. Connect Neon PostgreSQL as `DATABASE_URL`
+5. Deploy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Private — All rights reserved.
