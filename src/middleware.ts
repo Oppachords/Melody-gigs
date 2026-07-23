@@ -1,14 +1,7 @@
-import { auth } from "@/lib/auth";
+import NextAuth from "next-auth";
+import { authConfig } from "@/lib/auth.config";
 
-export default auth((req) => {
-  const { pathname } = req.nextUrl;
-
-  if (pathname.startsWith("/dashboard") && !req.auth) {
-    const loginUrl = new URL("/login", req.nextUrl.origin);
-    loginUrl.searchParams.set("callbackUrl", pathname);
-    return Response.redirect(loginUrl);
-  }
-});
+export default NextAuth(authConfig).auth;
 
 export const config = {
   matcher: ["/dashboard/:path*"],

@@ -13,6 +13,7 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "npx tsx prisma/seed.ts",
     "db:cleanup-demo": "npx tsx prisma/cleanup-demo-data.ts",
+    "db:fix-auth": "npx tsx prisma/fix-auth-state.ts",
     "db:studio": "prisma studio"
   },
   "prisma": {

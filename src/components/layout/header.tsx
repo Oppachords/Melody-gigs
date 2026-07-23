@@ -107,7 +107,9 @@ export function Header() {
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => signOut()}>
+                  <DropdownMenuItem
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                  >
                     Sign out
                   </DropdownMenuItem>
                 </DropdownMenuContent>

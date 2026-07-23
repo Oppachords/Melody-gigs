@@ -53,6 +53,7 @@ Add these in **Vercel → Project → Settings → Environment Variables** (Prod
 | `AUTH_URL` | `https://your-domain.com` (no trailing slash) |
 | `AUTH_GOOGLE_ID` | Google OAuth client ID |
 | `AUTH_GOOGLE_SECRET` | Google OAuth client secret |
+| `ADMIN_EMAIL` | Email auto-promoted to admin on sign-in (default: `kallylcolyns@gmail.com`) |
 | `BLOB_READ_WRITE_TOKEN` | Auto-injected when Blob store is connected (Step 4) |
 | `NEXT_PUBLIC_APP_URL` | Same as production URL |
 | `NEXT_PUBLIC_APP_NAME` | `MelodyGigs` |
