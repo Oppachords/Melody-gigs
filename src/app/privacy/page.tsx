@@ -32,7 +32,7 @@ export default function PrivacyPage() {
 
       <h2>Third-Party Services</h2>
       <p>
-        We use Google (authentication), UploadThing (profile images), Pandora
+        We use Google (authentication), Vercel Blob (profile images), Pandora
         Systems (payments), and Google AdSense (advertising). Each service has
         its own privacy policy.
       </p>

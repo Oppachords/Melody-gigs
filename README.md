@@ -10,7 +10,7 @@ A modern, premium freelance marketplace where music professionals, creative arti
 - **Animation:** Framer Motion
 - **Database:** PostgreSQL (Neon) + Prisma ORM
 - **Auth:** NextAuth v5 (Google OAuth only)
-- **File Uploads:** UploadThing (profile images)
+- **File Uploads:** Vercel Blob (profile images)
 - **Payments:** Pandora Systems
 - **Deployment:** Vercel
 
@@ -38,7 +38,8 @@ A modern, premium freelance marketplace where music professionals, creative arti
 - Node.js 18+
 - PostgreSQL database (recommend [Neon](https://neon.tech))
 - Google OAuth credentials
-- UploadThing account
+- Google OAuth credentials
+- Vercel Blob store (for profile images; see [DEPLOY-VERCEL.md](./DEPLOY-VERCEL.md))
 - Pandora Systems API keys
 
 ### Setup
@@ -66,7 +67,7 @@ cp .env.example .env
    - `DATABASE_URL` — Neon PostgreSQL connection string
    - `AUTH_SECRET` — Generate with `openssl rand -base64 32`
    - `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` — Google OAuth credentials
-   - `UPLOADTHING_TOKEN` — UploadThing API token
+   - `BLOB_READ_WRITE_TOKEN` — Vercel Blob token (from Vercel Storage dashboard)
    - `PANDORA_API_KEY` / `PANDORA_API_SECRET` — Pandora Systems keys
    - `NEXT_PUBLIC_GOOGLE_ADSENSE_CLIENT` — Google AdSense client ID
 
@@ -90,7 +91,7 @@ Open [http://localhost:3000](http://localhost:3000).
 ```
 src/
 ├── app/                    # Next.js App Router pages & API routes
-│   ├── api/               # API endpoints (auth, payments, uploadthing)
+│   ├── api/               # API endpoints (auth, payments, uploads)
 │   ├── dashboard/         # Client, Creator, Admin dashboards
 │   ├── search/            # Creator search
 │   ├── gigs/              # Gig browsing
@@ -114,11 +115,14 @@ public/
 
 ## Deployment (Vercel)
 
+See **[DEPLOY-VERCEL.md](./DEPLOY-VERCEL.md)** for the full guide.
+
 1. Push to GitHub
-2. Import project in Vercel
-3. Add all environment variables from `.env.example`
-4. Connect Neon PostgreSQL as `DATABASE_URL`
-5. Deploy
+2. Import project in [Vercel](https://vercel.com/new)
+3. Connect Neon (Storage integration) for `DATABASE_URL`
+4. Create a Vercel Blob store and connect it to the project (`BLOB_READ_WRITE_TOKEN`)
+5. Add remaining environment variables from `.env.example`
+6. Run `npm run db:push` against production Neon, then redeploy
 
 ## License
 
