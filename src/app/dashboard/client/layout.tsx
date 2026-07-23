@@ -1,4 +1,4 @@
-import { requireAuth } from "@/lib/session";
+import { requireClient } from "@/lib/session";
 import { DashboardNav } from "@/components/layout/dashboard-nav";
 import { NAV_LINKS } from "@/lib/constants";
 
@@ -7,7 +7,7 @@ export default async function ClientDashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  await requireAuth();
+  await requireClient();
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)]">

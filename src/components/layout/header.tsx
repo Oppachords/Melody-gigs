@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Menu, Moon, Sun, Search, MessageSquare } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -19,6 +20,7 @@ import { NAV_LINKS } from "@/lib/constants";
 import { getInitials } from "@/lib/utils-app";
 
 export function Header() {
+  const pathname = usePathname();
   const { data: session } = useSession();
   const { theme, setTheme } = useTheme();
 
@@ -112,7 +114,16 @@ export function Header() {
               </DropdownMenu>
             </>
           ) : (
-            <Button onClick={() => signIn("google")} size="sm">
+            <Button
+              onClick={() =>
+                signIn("google", {
+                  callbackUrl: pathname.startsWith("/login")
+                    ? "/"
+                    : pathname,
+                })
+              }
+              size="sm"
+            >
               Sign in with Google
             </Button>
           )}

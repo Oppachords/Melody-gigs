@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
@@ -13,14 +14,48 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { CREATOR_CATEGORIES } from "@/lib/constants";
-import { useState } from "react";
 import { toast } from "sonner";
 
 export default function BecomeCreatorPage() {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const router = useRouter();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    if (status !== "authenticated") {
+      setInitialized(true);
+      return;
+    }
+
+    async function loadProfile() {
+      try {
+        const res = await fetch("/api/users/me");
+        if (!res.ok) return;
+        const data = await res.json();
+
+        if (Array.isArray(data.categories) && data.categories.length > 0) {
+          setSelectedCategories(data.categories);
+        }
+
+        if (data.role === "CREATOR") {
+          router.replace("/dashboard/creator");
+          return;
+        }
+
+        if (data.role === "ADMIN") {
+          router.replace("/dashboard/admin");
+        }
+      } catch {
+        // Non-fatal — user can still submit the form
+      } finally {
+        setInitialized(true);
+      }
+    }
+
+    loadProfile();
+  }, [status, router]);
 
   const toggleCategory = (cat: string) => {
     setSelectedCategories((prev) =>
@@ -47,18 +82,23 @@ export default function BecomeCreatorPage() {
         body: JSON.stringify({ categories: selectedCategories }),
       });
 
-      if (!res.ok) throw new Error("Failed to update role");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Failed to update role");
 
+      await update();
       toast.success("Welcome to MelodyGigs as a creator!");
       router.push("/dashboard/creator");
-    } catch {
-      toast.error("Something went wrong. Please try again.");
+      router.refresh();
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Something went wrong. Please try again."
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  if (status === "loading") {
+  if (status === "loading" || !initialized) {
     return (
       <div className="container mx-auto flex min-h-[50vh] items-center justify-center">
         <p className="text-muted-foreground">Loading...</p>
@@ -82,7 +122,8 @@ export default function BecomeCreatorPage() {
               Select Your Categories
             </Label>
             <p className="mb-4 text-sm text-muted-foreground">
-              Choose one or more categories that describe your services.
+              Choose one or more categories that describe your services. Your
+              selections are saved to your profile.
             </p>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {CREATOR_CATEGORIES.map((cat) => (
@@ -106,7 +147,7 @@ export default function BecomeCreatorPage() {
             onClick={handleSubmit}
             disabled={loading}
           >
-            {session ? "Start Creating" : "Sign in with Google to Continue"}
+            {session ? "Save & Start Creating" : "Sign in with Google to Continue"}
           </Button>
         </CardContent>
       </Card>

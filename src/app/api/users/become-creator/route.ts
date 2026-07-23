@@ -21,10 +21,25 @@ export async function POST(request: Request) {
       );
     }
 
-    await db.user.update({
+    const user = await db.user.findUnique({
       where: { id: session.user.id },
-      data: { role: "CREATOR" },
+      select: { role: true, status: true },
     });
+
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    if (user.status === "BANNED" || user.status === "SUSPENDED") {
+      return NextResponse.json({ error: "Account suspended" }, { status: 403 });
+    }
+
+    if (user.role === "CLIENT") {
+      await db.user.update({
+        where: { id: session.user.id },
+        data: { role: "CREATOR" },
+      });
+    }
 
     for (const catName of categories) {
       const category = await db.category.upsert({
@@ -48,7 +63,7 @@ export async function POST(request: Request) {
       });
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, role: "CREATOR" });
   } catch (error) {
     console.error("Become creator error:", error);
     return NextResponse.json(

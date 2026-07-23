@@ -1,4 +1,4 @@
-import { requireAuth } from "@/lib/session";
+import { requireClient } from "@/lib/session";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 export default async function ClientDashboardPage() {
-  const user = await requireAuth();
+  const user = await requireClient();
 
   const stats = [
     { label: "Active Projects", value: "0", icon: Briefcase },

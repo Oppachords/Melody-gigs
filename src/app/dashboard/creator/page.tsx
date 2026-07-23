@@ -1,4 +1,5 @@
-import { requireRole } from "@/lib/session";
+import { requireCreator } from "@/lib/session";
+import { db } from "@/lib/db";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,9 +12,17 @@ import {
   Plus,
   TrendingUp,
 } from "lucide-react";
+import { getSubscriptionBadge } from "@/lib/utils-app";
 
 export default async function CreatorDashboardPage() {
-  const user = await requireRole(["CREATOR", "ADMIN"]);
+  const user = await requireCreator();
+
+  const subscription = await db.subscription.findUnique({
+    where: { userId: user.id },
+    select: { plan: true },
+  });
+
+  const planBadge = getSubscriptionBadge(subscription?.plan ?? "FREE");
 
   const stats = [
     { label: "Active Ads", value: "0", icon: Megaphone },
@@ -30,7 +39,7 @@ export default async function CreatorDashboardPage() {
             <h1 className="text-3xl font-bold">
               Creator Studio
             </h1>
-            <Badge variant="outline">Free Plan</Badge>
+            <Badge variant={planBadge.variant}>{planBadge.label} Plan</Badge>
           </div>
           <p className="mt-1 text-muted-foreground">
             Welcome, {user.name?.split(" ")[0]}! Manage your services and earnings.

@@ -1,4 +1,4 @@
-import { requireAuth } from "@/lib/session";
+import { requireClient } from "@/lib/session";
 import { db } from "@/lib/db";
 import { ProfileImageUpload } from "@/components/upload/profile-image-upload";
 import {
@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 
 export default async function ClientSettingsPage() {
-  const user = await requireAuth();
+  const user = await requireClient();
 
   const profile = await db.profile.findUnique({
     where: { userId: user.id },

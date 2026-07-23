@@ -1,4 +1,4 @@
-import { requireRole } from "@/lib/session";
+import { requireCreator } from "@/lib/session";
 import { db } from "@/lib/db";
 import { ProfileImageUpload } from "@/components/upload/profile-image-upload";
 import {
@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 
 export default async function CreatorSettingsPage() {
-  const user = await requireRole(["CREATOR", "ADMIN"]);
+  const user = await requireCreator();
 
   const profile = await db.profile.findUnique({
     where: { userId: user.id },

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -8,7 +9,12 @@ export const metadata: Metadata = {
   description: "Find music and creative gigs posted by clients on MelodyGigs.",
 };
 
-export default function GigsPage() {
+export default async function GigsPage() {
+  const session = await auth();
+  const postGigHref = session
+    ? "/dashboard/client/gigs/new"
+    : "/login?callbackUrl=/dashboard/client/gigs/new";
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8 flex items-center justify-between">
@@ -19,7 +25,7 @@ export default function GigsPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href="/dashboard/client/gigs/new">Post a Gig</Link>
+          <Link href={postGigHref}>Post a Gig</Link>
         </Button>
       </div>
 
@@ -29,7 +35,9 @@ export default function GigsPage() {
             No gigs posted yet. Clients can post projects from their dashboard.
           </p>
           <Button className="mt-4" variant="outline" asChild>
-            <Link href="/login">Sign in to Post a Gig</Link>
+            <Link href={postGigHref}>
+              {session ? "Post a Gig" : "Sign in to Post a Gig"}
+            </Link>
           </Button>
         </CardContent>
       </Card>

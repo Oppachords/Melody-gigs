@@ -1,4 +1,4 @@
-import { requireRole } from "@/lib/session";
+import { requireCreator } from "@/lib/session";
 import { DashboardNav } from "@/components/layout/dashboard-nav";
 import { NAV_LINKS } from "@/lib/constants";
 
@@ -7,7 +7,7 @@ export default async function CreatorDashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  await requireRole(["CREATOR", "ADMIN"]);
+  await requireCreator();
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)]">

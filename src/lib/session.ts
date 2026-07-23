@@ -24,9 +24,15 @@ export async function requireAdmin() {
 }
 
 export async function requireCreator() {
-  return requireRole(["CREATOR", "ADMIN"], "/become-creator");
+  const user = await requireAuth();
+  if (user.role === "CLIENT") redirect("/become-creator");
+  if (user.role !== "CREATOR" && user.role !== "ADMIN") redirect("/");
+  return user;
 }
 
 export async function requireClient() {
-  return requireRole(["CLIENT", "ADMIN"], "/");
+  const user = await requireAuth();
+  if (user.role === "CREATOR") redirect("/dashboard/creator");
+  if (user.role !== "CLIENT" && user.role !== "ADMIN") redirect("/");
+  return user;
 }

@@ -22,10 +22,12 @@ declare module "next-auth" {
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),
+  trustHost: true,
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID!,
       clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+      allowDangerousEmailAccountLinking: true,
     }),
   ],
   pages: {
@@ -57,11 +59,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   events: {
     async createUser({ user }) {
-      await db.profile.create({
-        data: { userId: user.id! },
+      await db.profile.upsert({
+        where: { userId: user.id! },
+        update: {},
+        create: { userId: user.id! },
       });
-      await db.subscription.create({
-        data: { userId: user.id!, plan: "FREE", status: "ACTIVE" },
+      await db.subscription.upsert({
+        where: { userId: user.id! },
+        update: {},
+        create: { userId: user.id!, plan: "FREE", status: "ACTIVE" },
       });
     },
   },
