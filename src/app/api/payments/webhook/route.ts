@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { verifyPandoraWebhook } from "@/lib/pandora";
 import { db } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request: Request) {
   try {
     const payload = await request.text();
