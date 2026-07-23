@@ -122,6 +122,15 @@ PLATFORM_COMMISSION_RATE
 
 Connect your GitHub repo: `Oppachords/Melody-gigs` → branch `main`.
 
+### Worker size limit (important)
+
+Next.js + Prisma + Auth produces a Worker bundle of ~**3.8 MiB** (gzipped). Cloudflare **free** Workers allow **3 MiB** max. **Paid** Workers ($5/mo) allow **10 MiB**.
+
+If deploy fails with `code: 10027` (size limit):
+
+1. **Recommended:** Upgrade to [Cloudflare Workers Paid](https://developers.cloudflare.com/workers/platform/pricing/) (~$5/mo) — your bundle fits within the 10 MiB limit.
+2. **Alternative:** Deploy on **Vercel** instead (connect the same GitHub repo + Neon `DATABASE_URL`). Vercel has no Worker size limit for Next.js.
+
 ---
 
 ## Step 6 — Pandora Webhook
