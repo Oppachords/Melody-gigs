@@ -136,6 +136,51 @@ async function main() {
     await db.fAQ.create({ data: faq });
   }
 
+  const ADMIN_EMAIL = "kallylcolyns@gmail.com";
+  const proEndDate = new Date();
+  proEndDate.setFullYear(proEndDate.getFullYear() + 1);
+
+  const admin = await db.user.upsert({
+    where: { email: ADMIN_EMAIL },
+    update: {
+      role: "ADMIN",
+      status: "ACTIVE",
+      emailVerified: new Date(),
+    },
+    create: {
+      email: ADMIN_EMAIL,
+      name: "Admin",
+      role: "ADMIN",
+      status: "ACTIVE",
+      emailVerified: new Date(),
+    },
+  });
+
+  await db.profile.upsert({
+    where: { userId: admin.id },
+    update: {},
+    create: { userId: admin.id },
+  });
+
+  await db.subscription.upsert({
+    where: { userId: admin.id },
+    update: {
+      plan: "PROFESSIONAL",
+      status: "ACTIVE",
+      startDate: new Date(),
+      endDate: proEndDate,
+      autoRenew: true,
+    },
+    create: {
+      userId: admin.id,
+      plan: "PROFESSIONAL",
+      status: "ACTIVE",
+      endDate: proEndDate,
+      autoRenew: true,
+    },
+  });
+
+  console.log(`Admin seeded: ${ADMIN_EMAIL} (role ADMIN, plan PROFESSIONAL)`);
   console.log("Seed completed!");
 }
 
