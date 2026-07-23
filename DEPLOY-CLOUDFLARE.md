@@ -114,9 +114,11 @@ PLATFORM_COMMISSION_RATE
 | Setting | Value |
 |---------|-------|
 | Framework preset | Next.js |
-| Build command | `npm run build` |
-| Build output directory | `.next` (or per OpenNext if using Cloudflare adapter) |
+| Build command | `npm run build:cloudflare` |
+| Deploy command | `npx wrangler deploy` |
 | Node.js version | 20+ |
+
+The app uses **OpenNext for Cloudflare** with the **Neon serverless driver** (not `pg`) so database connections work on Workers.
 
 Connect your GitHub repo: `Oppachords/Melody-gigs` → branch `main`.
 

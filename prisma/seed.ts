@@ -1,12 +1,6 @@
 import "dotenv/config";
-import { PrismaClient } from "@prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { Pool } from "pg";
 import { CREATOR_CATEGORIES } from "../src/lib/constants";
-
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
+import { db } from "../src/lib/db";
 
 function slugify(text: string) {
   return text
@@ -21,7 +15,7 @@ async function main() {
 
   for (let i = 0; i < CREATOR_CATEGORIES.length; i++) {
     const name = CREATOR_CATEGORIES[i];
-    await prisma.category.upsert({
+    await db.category.upsert({
       where: { slug: slugify(name) },
       update: {},
       create: {
@@ -33,13 +27,13 @@ async function main() {
     });
   }
 
-  await prisma.setting.upsert({
+  await db.setting.upsert({
     where: { key: "commission_rate" },
     update: {},
     create: { key: "commission_rate", value: { rate: 5 } },
   });
 
-  await prisma.setting.upsert({
+  await db.setting.upsert({
     where: { key: "landing_page" },
     update: {},
     create: {
@@ -60,7 +54,7 @@ async function main() {
   ];
 
   for (const stat of stats) {
-    await prisma.landingStat.create({ data: stat });
+    await db.landingStat.create({ data: stat });
   }
 
   const testimonials = [
@@ -91,7 +85,7 @@ async function main() {
   ];
 
   for (const t of testimonials) {
-    await prisma.testimonial.create({ data: t });
+    await db.testimonial.create({ data: t });
   }
 
   const stories = [
@@ -114,7 +108,7 @@ async function main() {
   ];
 
   for (const story of stories) {
-    await prisma.successStory.create({ data: story });
+    await db.successStory.create({ data: story });
   }
 
   const faqs = [
@@ -139,7 +133,7 @@ async function main() {
   ];
 
   for (const faq of faqs) {
-    await prisma.fAQ.create({ data: faq });
+    await db.fAQ.create({ data: faq });
   }
 
   console.log("Seed completed!");
@@ -151,6 +145,5 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
-    await pool.end();
+    await db.$disconnect();
   });
