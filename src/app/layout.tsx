@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "@/components/providers";
-import { SiteLayout } from "@/components/layout/site-layout";
+import { AppShell } from "@/components/layout/app-shell";
 import { APP_NAME, APP_DESCRIPTION } from "@/lib/constants";
 import "./globals.css";
 
@@ -78,7 +78,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} font-sans antialiased`}>
         <Providers>
-          <SiteLayout>{children}</SiteLayout>
+          <AppShell>{children}</AppShell>
         </Providers>
       </body>
     </html>

@@ -20,7 +20,9 @@ export async function requireRole(roles: UserRole[], redirectTo = "/") {
 }
 
 export async function requireAdmin() {
-  return requireRole(["ADMIN"], "/");
+  const user = await requireAuth("/login?callbackUrl=/admin");
+  if (user.role !== "ADMIN") redirect("/");
+  return user;
 }
 
 export async function requireCreator() {

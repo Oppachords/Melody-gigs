@@ -72,20 +72,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     ...authConfig.callbacks,
-    async jwt({ token, user, trigger }) {
+    async jwt({ token, user }) {
       if (user) {
         token.sub = user.id;
         token.id = user.id;
-        const dbUser = await getDb().user.findUnique({
-          where: { id: user.id! },
-          select: { role: true },
-        });
-        token.role = dbUser?.role ?? user.role ?? "CLIENT";
       }
 
       const userId = (token.id ?? token.sub) as string | undefined;
-
-      if ((trigger === "update" || !token.role) && userId) {
+      if (userId) {
         const dbUser = await getDb().user.findUnique({
           where: { id: userId },
           select: { role: true },
@@ -98,8 +92,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       const userId = (token.id ?? token.sub) as string | undefined;
       if (session.user && userId) {
+        const dbUser = await getDb().user.findUnique({
+          where: { id: userId },
+          select: { role: true, name: true, image: true },
+        });
+
         session.user.id = userId;
-        session.user.role = (token.role as UserRole) ?? "CLIENT";
+        session.user.role = dbUser?.role ?? (token.role as UserRole) ?? "CLIENT";
+        if (dbUser?.name) session.user.name = dbUser.name;
+        if (dbUser?.image) session.user.image = dbUser.image;
       }
       return session;
     },

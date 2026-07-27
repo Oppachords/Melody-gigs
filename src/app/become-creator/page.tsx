@@ -24,6 +24,16 @@ export default function BecomeCreatorPage() {
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
+    if (status === "authenticated" && session?.user?.role === "CREATOR") {
+      router.replace("/dashboard/creator");
+      return;
+    }
+
+    if (status === "authenticated" && session?.user?.role === "ADMIN") {
+      router.replace("/admin");
+      return;
+    }
+
     if (status !== "authenticated") {
       setInitialized(true);
       return;
@@ -45,7 +55,8 @@ export default function BecomeCreatorPage() {
         }
 
         if (data.role === "ADMIN") {
-          router.replace("/dashboard/admin");
+          router.replace("/admin");
+          return;
         }
       } catch {
         // Non-fatal — user can still submit the form

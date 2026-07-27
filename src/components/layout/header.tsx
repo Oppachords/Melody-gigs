@@ -25,11 +25,9 @@ export function Header() {
   const { theme, setTheme } = useTheme();
 
   const dashboardPath =
-    session?.user?.role === "ADMIN"
-      ? "/dashboard/admin"
-      : session?.user?.role === "CREATOR"
-        ? "/dashboard/creator"
-        : "/dashboard/client";
+    session?.user?.role === "CREATOR"
+      ? "/dashboard/creator"
+      : "/dashboard/client";
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
@@ -98,6 +96,11 @@ export function Header() {
                   <DropdownMenuItem>
                     <Link href={dashboardPath}>Dashboard</Link>
                   </DropdownMenuItem>
+                  {session.user.role === "ADMIN" && (
+                    <DropdownMenuItem>
+                      <Link href="/admin">Admin Panel</Link>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem>
                     <Link href={`${dashboardPath}/settings`}>Settings</Link>
                   </DropdownMenuItem>

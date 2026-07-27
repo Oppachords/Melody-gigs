@@ -24,8 +24,12 @@ export default async function CreatorDashboardPage() {
 
   const planBadge = getSubscriptionBadge(subscription?.plan ?? "FREE");
 
+  const activeAdCount = await db.ad.count({
+    where: { userId: user.id, status: "ACTIVE" },
+  });
+
   const stats = [
-    { label: "Active Ads", value: "0", icon: Megaphone },
+    { label: "Active Ads", value: String(activeAdCount), icon: Megaphone },
     { label: "Total Views", value: "0", icon: Eye },
     { label: "Earnings", value: "$0", icon: DollarSign },
     { label: "Messages", value: "0", icon: MessageSquare },

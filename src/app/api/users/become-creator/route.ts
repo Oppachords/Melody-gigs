@@ -63,7 +63,10 @@ export async function POST(request: Request) {
       });
     }
 
-    return NextResponse.json({ success: true, role: "CREATOR" });
+    return NextResponse.json({
+      success: true,
+      role: user.role === "CLIENT" ? "CREATOR" : user.role,
+    });
   } catch (error) {
     console.error("Become creator error:", error);
     return NextResponse.json(
