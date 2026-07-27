@@ -1,10 +1,16 @@
-import { DashboardSectionPlaceholder } from "@/components/dashboard/section-placeholder";
+import { requireClient } from "@/lib/session";
+import { CreateGigForm } from "@/components/gigs/create-gig-form";
 
-export default function Page() {
+export default async function PostGigPage() {
+  await requireClient();
+
   return (
-    <DashboardSectionPlaceholder
-      title="Post a Gig"
-      description="Create a new gig for creators to apply to."
-    />
+    <div>
+      <h1 className="mb-2 text-3xl font-bold">Post a Gig</h1>
+      <p className="mb-8 text-muted-foreground">
+        Describe your project and let creators apply with proposals.
+      </p>
+      <CreateGigForm />
+    </div>
   );
 }

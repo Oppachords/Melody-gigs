@@ -25,9 +25,11 @@ export function Header() {
   const { theme, setTheme } = useTheme();
 
   const dashboardPath =
-    session?.user?.role === "CREATOR"
-      ? "/dashboard/creator"
-      : "/dashboard/client";
+    session?.user?.role === "ADMIN"
+      ? "/admin"
+      : session?.user?.role === "CREATOR"
+        ? "/dashboard/creator"
+        : "/dashboard/client";
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">

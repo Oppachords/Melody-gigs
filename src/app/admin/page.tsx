@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/session";
+import { getDb } from "@/lib/db";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Users,
@@ -8,17 +9,47 @@ import {
   TrendingUp,
   DollarSign,
 } from "lucide-react";
+import { formatCurrency } from "@/lib/utils-app";
 
 export default async function AdminDashboardPage() {
   await requireAdmin();
 
+  const db = getDb();
+
+  const [
+    userCount,
+    activeProjects,
+    revenue,
+    pendingPayments,
+    disputedProjects,
+    activeChats,
+  ] = await Promise.all([
+    db.user.count(),
+    db.project.count({
+      where: { status: { in: ["ACTIVE", "DELIVERED", "REVISION"] } },
+    }),
+    db.payment.aggregate({
+      where: { status: "RELEASED", type: "ESCROW" },
+      _sum: { amount: true },
+    }),
+    db.payment.count({
+      where: { status: { in: ["PENDING", "ESCROW_HELD"] } },
+    }),
+    db.project.count({ where: { status: "DISPUTED" } }),
+    db.chat.count(),
+  ]);
+
   const stats = [
-    { label: "Total Users", value: "0", icon: Users },
-    { label: "Active Projects", value: "0", icon: TrendingUp },
-    { label: "Revenue", value: "$0", icon: DollarSign },
-    { label: "Pending Payments", value: "0", icon: CreditCard },
-    { label: "Open Disputes", value: "0", icon: AlertTriangle },
-    { label: "Active Chats", value: "0", icon: MessageSquare },
+    { label: "Total Users", value: String(userCount), icon: Users },
+    { label: "Active Projects", value: String(activeProjects), icon: TrendingUp },
+    {
+      label: "Revenue",
+      value: formatCurrency(revenue._sum.amount ?? 0),
+      icon: DollarSign,
+    },
+    { label: "Pending Payments", value: String(pendingPayments), icon: CreditCard },
+    { label: "Open Disputes", value: String(disputedProjects), icon: AlertTriangle },
+    { label: "Active Chats", value: String(activeChats), icon: MessageSquare },
   ];
 
   return (

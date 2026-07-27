@@ -72,22 +72,25 @@ export default async function CreatorDashboardPage() {
         ))}
       </div>
 
-      <Card className="mt-8 border-violet-200 bg-gradient-to-r from-violet-50 to-blue-50 dark:from-violet-950/20 dark:to-blue-950/20 dark:border-violet-800">
-        <CardContent className="flex items-center justify-between p-6">
-          <div className="flex items-center gap-4">
-            <TrendingUp className="h-8 w-8 text-violet-600" />
-            <div>
-              <h3 className="font-semibold">Upgrade to Pro</h3>
-              <p className="text-sm text-muted-foreground">
-                Get featured placement, higher search ranking, and analytics for $30/year.
-              </p>
+      {(!subscription?.plan || subscription.plan === "FREE") && (
+        <Card className="mt-8 border-violet-200 bg-gradient-to-r from-violet-50 to-blue-50 dark:from-violet-950/20 dark:to-blue-950/20 dark:border-violet-800">
+          <CardContent className="flex items-center justify-between p-6">
+            <div className="flex items-center gap-4">
+              <TrendingUp className="h-8 w-8 text-violet-600" />
+              <div>
+                <h3 className="font-semibold">Upgrade to Pro</h3>
+                <p className="text-sm text-muted-foreground">
+                  Get featured placement, higher search ranking, and analytics for
+                  $30/year.
+                </p>
+              </div>
             </div>
-          </div>
-          <Button asChild>
-            <Link href="/dashboard/creator/subscription">Upgrade Now</Link>
-          </Button>
-        </CardContent>
-      </Card>
+            <Button asChild>
+              <Link href="/dashboard/creator/subscription">Upgrade Now</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

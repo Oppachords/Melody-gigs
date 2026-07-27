@@ -63,6 +63,36 @@ async function main() {
     console.log(`  Promoted ${adminEmail} to ADMIN with Pro subscription.`);
   }
 
+  const unlimitedEmail = "eyooppa@gmail.com";
+  const unlimitedUser = await db.user.findUnique({
+    where: { email: unlimitedEmail },
+    select: { id: true },
+  });
+
+  if (unlimitedUser) {
+    const endDate = new Date();
+    endDate.setFullYear(endDate.getFullYear() + 1);
+
+    await db.subscription.upsert({
+      where: { userId: unlimitedUser.id },
+      update: {
+        plan: "UNLIMITED",
+        status: "ACTIVE",
+        endDate,
+        autoRenew: true,
+      },
+      create: {
+        userId: unlimitedUser.id,
+        plan: "UNLIMITED",
+        status: "ACTIVE",
+        endDate,
+        autoRenew: true,
+      },
+    });
+
+    console.log(`  Upgraded ${unlimitedEmail} to UNLIMITED subscription.`);
+  }
+
   const users = await db.user.findMany({
     select: {
       email: true,

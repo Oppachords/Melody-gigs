@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -99,6 +100,10 @@ function SearchFilters() {
 }
 
 export function SearchPage() {
+  const { data: session } = useSession();
+  const isCreatorOrAdmin =
+    session?.user?.role === "CREATOR" || session?.user?.role === "ADMIN";
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -156,12 +161,22 @@ export function SearchPage() {
           <p className="mb-4 text-sm text-muted-foreground">0 creators found</p>
           <div className="rounded-2xl border border-dashed bg-muted/30 px-6 py-16 text-center">
             <p className="text-muted-foreground">
-              No creators found yet. Check back soon or join as a creator to be
-              listed here.
+              {isCreatorOrAdmin
+                ? "No creators found yet. Check back soon as more professionals join."
+                : session?.user
+                  ? "No creators found yet. Check back soon or browse featured services on the homepage."
+                  : "No creators found yet. Check back soon or join as a creator to be listed here."}
             </p>
-            <Button className="mt-4" variant="outline" asChild>
-              <Link href="/become-creator">Become a Creator</Link>
-            </Button>
+            {!session?.user && (
+              <Button className="mt-4" variant="outline" asChild>
+                <Link href="/become-creator">Become a Creator</Link>
+              </Button>
+            )}
+            {session?.user?.role === "CLIENT" && (
+              <Button className="mt-4" variant="outline" asChild>
+                <Link href="/become-creator">Become a Creator</Link>
+              </Button>
+            )}
           </div>
         </div>
 

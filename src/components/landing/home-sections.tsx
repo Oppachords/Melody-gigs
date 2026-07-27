@@ -5,6 +5,9 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { POPULAR_CATEGORIES } from "@/lib/constants";
+import { CreatorCard, AdCard } from "@/components/cards/creator-card";
+import { FeaturedEmptyState } from "@/components/landing/featured-empty-state";
+import { LandingCTA } from "@/components/landing/landing-cta";
 
 interface SectionProps {
   title: string;
@@ -32,28 +35,19 @@ function SectionHeader({ title, subtitle, viewAllHref }: SectionProps) {
   );
 }
 
-function EmptyState({
-  message,
-  actionHref,
-  actionLabel,
-}: {
-  message: string;
-  actionHref?: string;
-  actionLabel?: string;
-}) {
-  return (
-    <div className="rounded-2xl border border-dashed bg-muted/30 px-6 py-12 text-center">
-      <p className="text-muted-foreground">{message}</p>
-      {actionHref && actionLabel && (
-        <Button className="mt-4" variant="outline" asChild>
-          <Link href={actionHref}>{actionLabel}</Link>
-        </Button>
-      )}
-    </div>
-  );
-}
+type FeaturedCreator = Awaited<
+  ReturnType<typeof import("@/lib/landing").getFeaturedCreators>
+>[number];
 
-export function FeaturedCreatorsSection() {
+type FeaturedAd = Awaited<
+  ReturnType<typeof import("@/lib/landing").getFeaturedAds>
+>[number];
+
+export function FeaturedCreatorsSection({
+  creators,
+}: {
+  creators: FeaturedCreator[];
+}) {
   return (
     <section className="py-16">
       <div className="container mx-auto px-4">
@@ -62,30 +56,66 @@ export function FeaturedCreatorsSection() {
           subtitle="Top-rated professionals with Pro and Premium plans"
           viewAllHref="/search?plan=pro"
         />
-        <EmptyState
-          message="No featured creators yet. Pro and Premium creators will appear here once they join."
-          actionHref="/become-creator"
-          actionLabel="Become a Creator"
-        />
+        {creators.length === 0 ? (
+          <FeaturedEmptyState
+            message="No featured creators yet. Pro and Premium creators appear here once they join."
+            guestAction={{
+              href: "/become-creator",
+              label: "Become a Creator",
+            }}
+          />
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {creators.map((creator, i) => (
+              <motion.div
+                key={creator.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <CreatorCard {...creator} />
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
 }
 
-export function FeaturedGigsSection() {
+export function FeaturedGigsSection({ ads }: { ads: FeaturedAd[] }) {
   return (
     <section className="bg-muted/30 py-16">
       <div className="container mx-auto px-4">
         <SectionHeader
           title="Featured Services"
-          subtitle="Popular services from verified creators"
+          subtitle="Popular services from Pro and Premium creators"
           viewAllHref="/search"
         />
-        <EmptyState
-          message="No services listed yet. Creators can publish adverts from their dashboard."
-          actionHref="/become-creator"
-          actionLabel="List Your Services"
-        />
+        {ads.length === 0 ? (
+          <FeaturedEmptyState
+            message="No featured services yet. Pro and Premium creators can publish ads from their dashboard."
+            guestAction={{
+              href: "/become-creator",
+              label: "List Your Services",
+            }}
+          />
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {ads.map((ad, i) => (
+              <motion.div
+                key={ad.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <AdCard {...ad} />
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
@@ -123,36 +153,4 @@ export function CategoriesSection() {
   );
 }
 
-export function CTASection() {
-  return (
-    <section className="py-16">
-      <div className="container mx-auto px-4">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-violet-600 to-blue-600 px-8 py-16 text-center text-white md:px-16">
-          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
-          <div className="relative">
-            <h2 className="text-3xl font-bold md:text-4xl">
-              Ready to Start Your Project?
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-white/80">
-              Join music professionals and clients on MelodyGigs. Sign in with
-              Google to get started in seconds.
-            </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button size="lg" variant="secondary" asChild>
-                <Link href="/login">Get Started Free</Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white/30 bg-white/10 text-white hover:bg-white/20"
-                asChild
-              >
-                <Link href="/become-creator">Become a Creator</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+export { LandingCTA };
